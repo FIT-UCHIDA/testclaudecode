@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お手伝いトラッカー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>お手伝いトラッカー</h1>
+            <p class="subtitle">おうちのお手伝いを記録しよう!</p>
+        </header>
+
+        <!-- 親用：家事入力セクション -->
+        <section class="parent-section">
+            <h2>家事を追加（親用）</h2>
+            <form id="chore-form">
+                <div class="form-group">
+                    <label for="chore-name">家事の名前</label>
+                    <input type="text" id="chore-name" placeholder="例：お皿洗い" required>
+                </div>
+                <div class="form-group">
+                    <label for="chore-points">ポイント</label>
+                    <input type="number" id="chore-points" min="1" max="100" value="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="chore-assignee">担当する子ども</label>
+                    <input type="text" id="chore-assignee" placeholder="例：たろう" required>
+                </div>
+                <button type="submit" class="btn btn-add">追加する</button>
+            </form>
+        </section>
+
+        <!-- 家事リスト -->
+        <section class="chores-section">
+            <h2>今日のお手伝いリスト</h2>
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">すべて</button>
+                <button class="filter-btn" data-filter="pending">未完了</button>
+                <button class="filter-btn" data-filter="done">完了</button>
+            </div>
+            <ul id="chore-list"></ul>
+            <p id="empty-message" class="empty-message">家事がまだ登録されていません</p>
+        </section>
+
+        <!-- スコアボード -->
+        <section class="scoreboard-section">
+            <h2>スコアボード</h2>
+            <div id="scoreboard"></div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

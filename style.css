@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #e74c3c;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e74c3c;
+}
+
+/* Parent Section */
+.parent-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #e74c3c;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.1s, opacity 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-add {
+    width: 100%;
+    background: #e74c3c;
+    color: #fff;
+    margin-top: 5px;
+}
+
+.btn-add:hover {
+    opacity: 0.9;
+}
+
+/* Chores Section */
+.chores-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn.active {
+    background: #e74c3c;
+    color: #fff;
+    border-color: #e74c3c;
+}
+
+#chore-list {
+    list-style: none;
+}
+
+.chore-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: #f9f9f9;
+    transition: background 0.2s;
+}
+
+.chore-item:hover {
+    background: #f0f0f0;
+}
+
+.chore-item.done {
+    opacity: 0.6;
+}
+
+.chore-item.done .chore-name {
+    text-decoration: line-through;
+}
+
+.chore-checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #27ae60;
+}
+
+.chore-info {
+    flex: 1;
+}
+
+.chore-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.chore-meta {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 2px;
+}
+
+.chore-points {
+    background: #f1c40f;
+    color: #fff;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.chore-delete {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.chore-delete:hover {
+    color: #e74c3c;
+}
+
+.empty-message {
+    text-align: center;
+    color: #bbb;
+    padding: 20px;
+    font-size: 0.95rem;
+}
+
+.empty-message.hidden {
+    display: none;
+}
+
+/* Scoreboard */
+.scoreboard-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.score-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.score-name {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.score-points {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.score-bar {
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f1c40f, #e74c3c);
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
+#scoreboard .empty-message {
+    padding: 10px;
+}
