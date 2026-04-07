@@ -441,41 +441,200 @@
         </table>
     </section>
 
-    <!-- 5. ステップ2以降 -->
+    <!-- 5. 開発スケジュール -->
     <section>
-        <h2><span class="num">5</span>ステップ2以降：開発ロードマップ</h2>
+        <h2><span class="num">5</span>開発スケジュール</h2>
 
         <div class="timeline">
             <div class="timeline-item">
-                <h4>ステップ1：手法トライアル（上記）</h4>
-                <p>4手法を試作し、精度・速度・実装コストを比較評価。最適手法を1つ選定する。</p>
+                <h4>ステップ1：認識手法のトライアル（6ヶ月）</h4>
+                <p>上記4手法を試作し、精度・速度・実装コストを比較評価。最適手法を1つ選定する。
+                各手法についてプロトタイプを構築し、実データでの定量評価を行う。</p>
             </div>
             <div class="timeline-item">
-                <h4>ステップ2：データセット構築</h4>
-                <p>マルチアングル撮影データからアノテーションツールを構築し、訓練・検証データを作成。
-                半自動アノテーション（モデル推論 + 人手修正）でコストを削減する。</p>
+                <h4>ステップ2：物理量の算出（2ヶ月 + フィードバック期間）</h4>
+                <p>ステップ1で確立したキーポイント検出を基盤に、以下の物理量を算出する。</p>
+                <ul style="margin-top:8px;">
+                    <li><strong>ラケットスピード：</strong>フレーム間のキーポイント移動量と時間差からスイング速度を計算</li>
+                    <li><strong>面の向き：</strong>フェース4点(F1-F4)から法線ベクトルを算出し、ラケット面の3D方向を推定</li>
+                    <li><strong>グリップの向き：</strong>G1-G2軸の方向ベクトルから握り方・手首の角度を推定</li>
+                    <li><strong>シャトル打点位置：</strong>シャトル検出との時空間的な交差判定により、フェース面上の打点座標を特定</li>
+                </ul>
             </div>
-            <div class="timeline-item">
-                <h4>ステップ3：モデル学習・最適化</h4>
-                <p>選定手法でモデルを本格学習。データ拡張、ハイパーパラメータチューニング、
-                TensorRT等による推論最適化を実施する。</p>
-            </div>
-            <div class="timeline-item">
-                <h4>ステップ4：マルチアングル統合</h4>
-                <p>複数カメラの検出結果を三角測量により3D座標へ統合。
-                カメラキャリブレーション情報を活用し、ラケットの3D骨格を復元する。</p>
-            </div>
-            <div class="timeline-item">
-                <h4>ステップ5：THEI3Dとの完全統合</h4>
-                <p>THEI3Dパイプラインに組み込み、人体骨格＋ラケット骨格の統合出力を実現。
-                時系列スムージングとトラッキングを追加する。</p>
-            </div>
+        </div>
+
+        <!-- Gantt-style schedule -->
+        <h3>スケジュール概観</h3>
+        <div style="overflow-x:auto; margin:20px 0;">
+            <table style="min-width:600px;">
+                <thead>
+                    <tr>
+                        <th style="width:200px;">フェーズ</th>
+                        <th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>手法A: YOLOv8-Pose</td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr>
+                        <td>手法B: YOLO+HRNet</td>
+                        <td></td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr>
+                        <td>手法C: セグメンテーション</td>
+                        <td colspan="2"></td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td>手法D: テンプレート</td>
+                        <td colspan="3"></td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td>総合比較・手法選定</td>
+                        <td colspan="5"></td>
+                        <td style="background:#ffd166;text-align:center;font-size:0.8rem;border-radius:4px;">選定</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>物理量算出・FB</td>
+                        <td colspan="6"></td>
+                        <td colspan="2" style="background:#06d6a0;text-align:center;font-size:0.8rem;color:#fff;border-radius:4px;">算出+FB</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
-    <!-- 6. 技術的課題 -->
+    <!-- 6. ビジネスモデル・見積もり -->
     <section>
-        <h2><span class="num">6</span>想定される技術的課題</h2>
+        <h2><span class="num">6</span>ビジネスモデル・販売構成</h2>
+        <p>
+            本プロジェクトの成果を、バドミントンに限らず<strong>スポーツ打具全般の追尾ツール</strong>として汎用化し、製品として販売する。
+            基本パッケージとお客様ごとのカスタマイズパッケージの2層構成とする。
+        </p>
+
+        <h3>1）基本パッケージ（自社開発）</h3>
+        <div class="info-box">
+            共通基盤として全顧客に提供するコア機能群。
+        </div>
+        <table>
+            <thead>
+                <tr><th>機能</th><th>内容</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>複数カメラキャリブレーション</strong></td>
+                    <td>マルチカメラ構成のキャリブレーション情報（内部・外部パラメータ）の取り込み・管理機能。
+                    チェッカーボードやCharuco等による自動キャリブレーションをサポート。</td>
+                </tr>
+                <tr>
+                    <td><strong>SAM・YOLO基本パッケージ</strong></td>
+                    <td>SAM（Segment Anything Model）によるセグメンテーション機能と、
+                    YOLOによる物体検出・キーポイント推定の共通基盤。
+                    事前学習済みモデルおよびファインチューニング用パイプラインを含む。</td>
+                </tr>
+                <tr>
+                    <td><strong>モーションキャプチャ連携</strong></td>
+                    <td>外部モーションキャプチャシステム（THEI3D、OptiTrack等）のデータを取り込み、
+                    手・身体の位置情報をROI制約として活用する連携機能。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2）お客様ごとのカスタマイズパッケージ（委託開発）</h3>
+        <div class="highlight-box">
+            個別の顧客要件に応じて開発を委託する部分。スポーツ種目・打具の種類・測定目的に合わせてカスタマイズする。
+        </div>
+        <table>
+            <thead>
+                <tr><th>項目</th><th>内容</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>お客様データでの学習</strong></td>
+                    <td>顧客が提供する動画データ・撮影環境に特化したモデルの学習。
+                    アノテーション作成支援から学習・評価までを一貫して実施。</td>
+                </tr>
+                <tr>
+                    <td><strong>KPI設定</strong></td>
+                    <td>顧客の要求仕様に基づき、達成すべきKPI（検出精度、処理速度、対応シーン等）を定義。
+                    例：スマッシュ時の面角度誤差5度以内、30fps以上のリアルタイム処理 等。</td>
+                </tr>
+                <tr>
+                    <td><strong>KPI達成のための各種施工</strong></td>
+                    <td>
+                        <ul>
+                            <li>データ拡張・追加データ収集による精度向上</li>
+                            <li>モデルアーキテクチャの調整・最適化</li>
+                            <li>推論環境（エッジデバイス、クラウド等）への最適化・デプロイ</li>
+                            <li>顧客システムとのAPI連携・インテグレーション</li>
+                            <li>運用後のモデル更新・メンテナンス体制の構築</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Business model diagram -->
+        <h3>製品構成イメージ</h3>
+        <div class="diagram-wrapper">
+            <svg width="560" height="300" viewBox="0 0 560 300">
+                <!-- Base package -->
+                <rect x="30" y="160" width="500" height="120" rx="12" fill="#e8f0fe" stroke="#0f3460" stroke-width="2"/>
+                <text x="280" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f3460">基本パッケージ（自社開発・共通基盤）</text>
+                <rect x="50" y="205" width="140" height="55" rx="8" fill="#fff" stroke="#c4d8f0" stroke-width="1.5"/>
+                <text x="120" y="228" text-anchor="middle" font-size="11" fill="#333">複数カメラ</text>
+                <text x="120" y="245" text-anchor="middle" font-size="11" fill="#333">キャリブレーション</text>
+                <rect x="210" y="205" width="140" height="55" rx="8" fill="#fff" stroke="#c4d8f0" stroke-width="1.5"/>
+                <text x="280" y="228" text-anchor="middle" font-size="11" fill="#333">SAM・YOLO</text>
+                <text x="280" y="245" text-anchor="middle" font-size="11" fill="#333">基本パッケージ</text>
+                <rect x="370" y="205" width="140" height="55" rx="8" fill="#fff" stroke="#c4d8f0" stroke-width="1.5"/>
+                <text x="440" y="228" text-anchor="middle" font-size="11" fill="#333">モーションキャプチャ</text>
+                <text x="440" y="245" text-anchor="middle" font-size="11" fill="#333">連携機能</text>
+
+                <!-- Custom packages -->
+                <rect x="30" y="20" width="150" height="110" rx="12" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                <text x="105" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#856404">顧客A</text>
+                <text x="105" y="68" text-anchor="middle" font-size="10" fill="#856404">バドミントン</text>
+                <text x="105" y="86" text-anchor="middle" font-size="10" fill="#856404">ラケット追尾</text>
+                <text x="105" y="115" text-anchor="middle" font-size="9" fill="#999">委託開発</text>
+
+                <rect x="205" y="20" width="150" height="110" rx="12" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                <text x="280" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#856404">顧客B</text>
+                <text x="280" y="68" text-anchor="middle" font-size="10" fill="#856404">テニス</text>
+                <text x="280" y="86" text-anchor="middle" font-size="10" fill="#856404">ラケット解析</text>
+                <text x="280" y="115" text-anchor="middle" font-size="9" fill="#999">委託開発</text>
+
+                <rect x="380" y="20" width="150" height="110" rx="12" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                <text x="455" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#856404">顧客C</text>
+                <text x="455" y="68" text-anchor="middle" font-size="10" fill="#856404">野球</text>
+                <text x="455" y="86" text-anchor="middle" font-size="10" fill="#856404">バット追尾</text>
+                <text x="455" y="115" text-anchor="middle" font-size="9" fill="#999">委託開発</text>
+
+                <!-- Arrows -->
+                <line x1="105" y1="130" x2="105" y2="158" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                <line x1="280" y1="130" x2="280" y2="158" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                <line x1="455" y1="130" x2="455" y2="158" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                <defs>
+                    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#aaa"/>
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 7. 技術的課題 -->
+    <section>
+        <h2><span class="num">7</span>想定される技術的課題</h2>
         <table>
             <thead>
                 <tr><th>課題</th><th>内容</th><th>対策案</th></tr>
@@ -510,15 +669,19 @@
         </table>
     </section>
 
-    <!-- 7. まとめ -->
+    <!-- 8. まとめ -->
     <section>
-        <h2><span class="num">7</span>まとめ</h2>
+        <h2><span class="num">8</span>まとめ</h2>
         <p>
             本プロジェクトでは、マルチアングル動画からバドミントンラケットの骨格（6キーポイント）をリアルタイムに推定するシステムを構築する。
             THEI3Dとの連携により探索範囲を限定し、YOLOベースの画像処理を中心に複数手法をトライアルしたうえで最適なアプローチを選定する。
         </p>
         <p>
-            まずはステップ1として4つの認識手法を試作・比較評価し、精度・速度・実装コストの観点から最適解を見極める。
+            <strong>ステップ1（6ヶ月）</strong>で4つの認識手法を試作・比較評価し、最適手法を選定。
+            <strong>ステップ2（2ヶ月+FB）</strong>でラケットスピード・面の向き・打点位置等の物理量算出を実装する。
+        </p>
+        <p>
+            成果物はスポーツ打具追尾ツールとして製品化し、基本パッケージ（自社）＋カスタマイズパッケージ（委託）の2層構成で展開する。
         </p>
     </section>
 
