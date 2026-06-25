@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企画書：バドミントンラケット骨格推定システム</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #a0c4ff;
+            margin-bottom: 20px;
+        }
+        .header .meta {
+            font-size: 0.85rem;
+            color: #8899aa;
+        }
+
+        /* Main */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section */
+        section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        section h2 {
+            font-size: 1.4rem;
+            color: #0f3460;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0f3460;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        section h2 .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: #0f3460;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+        section h3 {
+            font-size: 1.1rem;
+            color: #16213e;
+            margin: 20px 0 10px;
+        }
+        p { margin-bottom: 12px; }
+
+        /* Diagram: Racket Keypoints */
+        .diagram-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        .diagram-wrapper svg {
+            max-width: 100%;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.92rem;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        th {
+            background: #f0f4f8;
+            color: #0f3460;
+            font-weight: bold;
+        }
+        tr:hover td { background: #fafbfc; }
+
+        /* List */
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 12px;
+        }
+        li { margin-bottom: 6px; }
+
+        /* Pipeline */
+        .pipeline {
+            display: flex;
+            gap: 0;
+            align-items: stretch;
+            margin: 24px 0;
+            overflow-x: auto;
+        }
+        .pipeline-step {
+            flex: 1;
+            min-width: 140px;
+            background: #e8f0fe;
+            padding: 16px 12px;
+            text-align: center;
+            position: relative;
+            border: 1px solid #c4d8f0;
+        }
+        .pipeline-step:first-child { border-radius: 8px 0 0 8px; }
+        .pipeline-step:last-child { border-radius: 0 8px 8px 0; }
+        .pipeline-step .step-title {
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #0f3460;
+            margin-bottom: 6px;
+        }
+        .pipeline-step .step-desc {
+            font-size: 0.78rem;
+            color: #555;
+        }
+        .pipeline-arrow {
+            display: flex;
+            align-items: center;
+            font-size: 1.4rem;
+            color: #0f3460;
+            padding: 0 2px;
+            flex-shrink: 0;
+        }
+
+        /* Highlight box */
+        .highlight-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 0.92rem;
+        }
+        .info-box {
+            background: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 0.92rem;
+        }
+
+        /* Steps timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #c4d8f0;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            background: #0f3460;
+            border-radius: 50%;
+            border: 3px solid #c4d8f0;
+        }
+        .timeline-item h4 {
+            font-size: 1rem;
+            color: #0f3460;
+            margin-bottom: 6px;
+        }
+        .timeline-item p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Trial methods cards */
+        .method-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .method-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+        .method-card:hover { border-color: #0f3460; }
+        .method-card h4 {
+            font-size: 1rem;
+            color: #0f3460;
+            margin-bottom: 8px;
+        }
+        .method-card p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .method-card .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            background: #e8f0fe;
+            color: #0f3460;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 600px) {
+            .header { padding: 40px 20px; }
+            .header h1 { font-size: 1.5rem; }
+            section { padding: 20px; }
+            .pipeline { flex-direction: column; }
+            .pipeline-arrow { transform: rotate(90deg); justify-content: center; padding: 4px 0; }
+            .pipeline-step:first-child, .pipeline-step:last-child { border-radius: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>バドミントンラケット骨格推定システム</h1>
+    <p class="subtitle">マルチアングル動画からのラケット6キーポイント検出</p>
+    <p class="meta">プロジェクト企画書 | 2026年4月</p>
+</div>
+
+<div class="container">
+
+    <!-- 1. 概要 -->
+    <section>
+        <h2><span class="num">1</span>プロジェクト概要</h2>
+        <p>
+            バドミントンの<strong>約20台のカメラによるマルチアングル動画</strong>から、選手が持つラケットの<strong>骨格（6キーポイント）</strong>を推定するシステムを開発する。
+            ラケットのフェース面を定義する4点、およびグリップの両端2点を検出し、ラケットの3D姿勢復元やスイング解析に活用する。
+        </p>
+        <div class="info-box">
+            <strong>前提：</strong>本システムはTHEI3D（3D人体姿勢推定）と同時に実行される。
+            THEI3Dが出力する手首・手の位置情報を起点として、ラケット探索範囲を大幅に絞り込むことで精度と速度を両立する。
+        </div>
+        <div class="highlight-box">
+            <strong>処理方式：</strong>
+            約20台のカメラデータに対して推論を行うため、リアルタイム処理ではなく<strong>オフラインバッチ処理</strong>を前提とする。
+            速度よりも精度を優先し、十分な計算時間をかけて高品質な推定結果を得る方針。
+        </div>
+    </section>
+
+    <!-- 2. 検出対象 -->
+    <section>
+        <h2><span class="num">2</span>検出対象：ラケットの6キーポイント</h2>
+        <p>ラケット骨格を以下の6点で定義する。</p>
+
+        <div class="diagram-wrapper">
+            <svg width="320" height="420" viewBox="0 0 320 420">
+                <!-- Racket face (ellipse) -->
+                <ellipse cx="160" cy="120" rx="80" ry="110" fill="none" stroke="#0f3460" stroke-width="2" stroke-dasharray="6,3"/>
+                <!-- Shaft -->
+                <line x1="160" y1="230" x2="160" y2="320" stroke="#0f3460" stroke-width="2"/>
+                <!-- Grip -->
+                <rect x="148" y="320" width="24" height="80" rx="6" fill="none" stroke="#0f3460" stroke-width="2"/>
+
+                <!-- Face 4 points -->
+                <circle cx="160" cy="14" r="8" fill="#e74c3c"/>
+                <text x="178" y="20" font-size="12" fill="#e74c3c" font-weight="bold">F1 (Top)</text>
+
+                <circle cx="160" cy="226" r="8" fill="#e74c3c"/>
+                <text x="178" y="232" font-size="12" fill="#e74c3c" font-weight="bold">F2 (Bottom)</text>
+
+                <circle cx="80" cy="120" r="8" fill="#e74c3c"/>
+                <text x="14" y="110" font-size="12" fill="#e74c3c" font-weight="bold">F3</text>
+                <text x="6" y="126" font-size="12" fill="#e74c3c" font-weight="bold">(Left)</text>
+
+                <circle cx="240" cy="120" r="8" fill="#e74c3c"/>
+                <text x="256" y="110" font-size="12" fill="#e74c3c" font-weight="bold">F4</text>
+                <text x="252" y="126" font-size="12" fill="#e74c3c" font-weight="bold">(Right)</text>
+
+                <!-- Grip 2 points -->
+                <circle cx="160" cy="320" r="8" fill="#2196f3"/>
+                <text x="178" y="326" font-size="12" fill="#2196f3" font-weight="bold">G1 (Grip Top)</text>
+
+                <circle cx="160" cy="400" r="8" fill="#2196f3"/>
+                <text x="178" y="406" font-size="12" fill="#2196f3" font-weight="bold">G2 (Grip End)</text>
+
+                <!-- Legend -->
+                <rect x="8" y="370" width="12" height="12" rx="6" fill="#e74c3c"/>
+                <text x="26" y="381" font-size="11" fill="#555">フェース定義点 (4点)</text>
+                <rect x="8" y="390" width="12" height="12" rx="6" fill="#2196f3"/>
+                <text x="26" y="401" font-size="11" fill="#555">グリップ端点 (2点)</text>
+            </svg>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>ID</th><th>名称</th><th>説明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>F1</td><td>フェース上端</td><td>ラケットヘッド頂点</td></tr>
+                <tr><td>F2</td><td>フェース下端</td><td>フェースとシャフトの接続点</td></tr>
+                <tr><td>F3</td><td>フェース左端</td><td>フェース最大幅の左側</td></tr>
+                <tr><td>F4</td><td>フェース右端</td><td>フェース最大幅の右側</td></tr>
+                <tr><td>G1</td><td>グリップ上端</td><td>グリップとシャフトの接続点</td></tr>
+                <tr><td>G2</td><td>グリップ下端</td><td>グリップエンド（手元側）</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 3. システム構成 -->
+    <section>
+        <h2><span class="num">3</span>システム構成・処理パイプライン</h2>
+
+        <div class="pipeline">
+            <div class="pipeline-step">
+                <div class="step-title">入力</div>
+                <div class="step-desc">マルチアングル動画フレーム</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+                <div class="step-title">THEI3D</div>
+                <div class="step-desc">手の3D位置を取得</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+                <div class="step-title">ROI抽出</div>
+                <div class="step-desc">手位置を中心にクロップ</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+                <div class="step-title">ラケット検出</div>
+                <div class="step-desc">YOLO等で検出+キーポイント回帰</div>
+            </div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step">
+                <div class="step-title">出力</div>
+                <div class="step-desc">6キーポイント座標</div>
+            </div>
+        </div>
+
+        <h3>THEI3D連携による探索範囲の絞り込み</h3>
+        <p>
+            THEI3Dが推定した手首位置を中心に、一定のマージン（例：200x200px）をROI（Region of Interest）として切り出す。
+            これにより、フルフレームでの探索に比べ、処理速度と検出精度を大幅に改善する。
+        </p>
+        <div class="highlight-box">
+            <strong>探索コスト削減効果：</strong>
+            フルHDフレーム（1920x1080）に対し、ROIを300x300pxに絞った場合、
+            探索面積は約 <strong>1/23</strong> に削減される。
+        </div>
+    </section>
+
+    <!-- 4. ステップ1：トライアル -->
+    <section>
+        <h2><span class="num">4</span>ステップ1：認識手法のトライアル</h2>
+        <p>
+            最適な認識手法を選定するため、以下の候補をそれぞれ試作・評価する。
+            各手法のPros/Consを定量的に比較し、本番実装に採用する手法を決定する。
+        </p>
+
+        <div class="method-cards">
+            <div class="method-card">
+                <h4>手法A：YOLOv8-Pose カスタム</h4>
+                <p>YOLOv8のPoseモデルをラケット6キーポイントで再学習する。物体検出とキーポイント回帰を一括で実行。</p>
+                <span class="tag">高速</span>
+                <span class="tag">End-to-End</span>
+                <span class="tag">要アノテーション</span>
+            </div>
+            <div class="method-card">
+                <h4>手法B：YOLO検出 + HRNet回帰</h4>
+                <p>YOLOでラケットBBoxを検出後、HRNetベースのキーポイント回帰ネットワークで6点を推定する2段構成。</p>
+                <span class="tag">高精度</span>
+                <span class="tag">2段構成</span>
+                <span class="tag">やや低速</span>
+            </div>
+            <div class="method-card">
+                <h4>手法C：セグメンテーション + 幾何推定</h4>
+                <p>ラケット領域をセマンティックセグメンテーションで抽出し、輪郭・楕円フィッティングで幾何的にキーポイントを算出。</p>
+                <span class="tag">アノテーション軽量</span>
+                <span class="tag">古典CV活用</span>
+                <span class="tag">遮蔽に弱い</span>
+            </div>
+            <div class="method-card">
+                <h4>手法D：テンプレートマッチング + 最適化</h4>
+                <p>ラケットの3Dモデルテンプレートを用意し、エッジ情報とのフィッティングにより姿勢と位置を推定。</p>
+                <span class="tag">モデルベース</span>
+                <span class="tag">少データ</span>
+                <span class="tag">計算コスト高</span>
+            </div>
+            <div class="method-card" style="border-color:#e74c3c;">
+                <h4>手法E：ハイブリッド（A+C）</h4>
+                <p>手法A（YOLOv8-Pose）で粗検出を行い、手法C（セグメンテーション+幾何推定）で幾何補正をかける2段構成。
+                精度と速度のバランスにおいて最も有望な組み合わせ。</p>
+                <span class="tag">推奨候補</span>
+                <span class="tag">精度+速度バランス</span>
+                <span class="tag">段階的補正</span>
+            </div>
+        </div>
+
+        <h3>評価基準</h3>
+        <table>
+            <thead>
+                <tr><th>評価項目</th><th>指標</th><th>目標値</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>検出精度</td><td>PCK@0.2（キーポイント正解率）</td><td>85%以上</td></tr>
+                <tr><td>遮蔽耐性</td><td>部分遮蔽時の検出率低下</td><td>-15%以内</td></tr>
+                <tr><td>学習データ量</td><td>必要アノテーション数</td><td>少ないほど良い</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 5. 開発スケジュール -->
+    <section>
+        <h2><span class="num">5</span>開発スケジュール</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>ステップ1：認識手法のトライアル（6ヶ月）</h4>
+                <p>上記5手法（A〜E）を試作し、精度・速度・実装コストを比較評価。最適手法を1つ選定する。
+                各手法についてプロトタイプを構築し、実データでの定量評価を行う。</p>
+            </div>
+            <div class="timeline-item">
+                <h4>ステップ2：物理量の算出（2ヶ月 + フィードバック期間）</h4>
+                <p>ステップ1で確立したキーポイント検出を基盤に、以下の物理量を算出する。</p>
+                <ul style="margin-top:8px;">
+                    <li><strong>ラケットスピード：</strong>フレーム間のキーポイント移動量と時間差からスイング速度を計算</li>
+                    <li><strong>面の向き：</strong>フェース4点(F1-F4)から法線ベクトルを算出し、ラケット面の3D方向を推定<br>
+                        <span style="font-size:0.85rem;color:#555;">算出方法：ベクトル v1 = F4-F3（左右方向）、v2 = F1-F2（上下方向）の外積 n = v1 &times; v2 を正規化して法線とする</span></li>
+                    <li><strong>グリップの向き：</strong>G1-G2軸の方向ベクトルから握り方・手首の角度を推定</li>
+                    <li><strong>シャトル打点位置：</strong>シャトル検出との時空間的な交差判定により、フェース面上の打点座標を特定</li>
+                </ul>
+                <div class="info-box" style="margin-top:12px;">
+                    <strong>時系列制御（Tracking-by-Detection）：</strong>
+                    動画データの連続性を活かし、前後フレームの検出結果を関連付けるトラッキングを導入する。
+                    カルマンフィルタ等による予測・補正ループで、検出座標のジッター（微細な震え）を抑制し、
+                    モーションブラーや一時的遮蔽によるフレーム欠損を時系列的に補完する。
+                </div>
+            </div>
+        </div>
+
+        <!-- Gantt-style schedule -->
+        <h3>スケジュール概観</h3>
+        <div style="overflow-x:auto; margin:20px 0;">
+            <table style="min-width:600px;">
+                <thead>
+                    <tr>
+                        <th style="width:200px;">フェーズ</th>
+                        <th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>手法A: YOLOv8-Pose</td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="6"></td>
+                    </tr>
+                    <tr>
+                        <td>手法B: YOLO+HRNet</td>
+                        <td></td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr>
+                        <td>手法C: セグメンテーション</td>
+                        <td colspan="2"></td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td>手法D: テンプレート</td>
+                        <td colspan="3"></td>
+                        <td colspan="2" style="background:#a0c4ff;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td>手法E: ハイブリッド(A+C)</td>
+                        <td colspan="3"></td>
+                        <td></td>
+                        <td colspan="2" style="background:#f4a0a0;text-align:center;font-size:0.8rem;border-radius:4px;">試作・評価</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>総合比較・手法選定</td>
+                        <td colspan="5"></td>
+                        <td style="background:#ffd166;text-align:center;font-size:0.8rem;border-radius:4px;">選定</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>物理量算出・FB</td>
+                        <td colspan="6"></td>
+                        <td colspan="2" style="background:#06d6a0;text-align:center;font-size:0.8rem;color:#fff;border-radius:4px;">算出+FB</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 6. ビジネスモデル・見積もり -->
+    <section>
+        <h2><span class="num">6</span>ビジネスモデル・販売構成</h2>
+        <p>
+            本プロジェクトの成果を、バドミントンに限らず<strong>スポーツ打具全般の追尾ツール</strong>として汎用化し、製品として販売する。
+            基本パッケージとお客様ごとのカスタマイズパッケージの2層構成とする。
+        </p>
+
+        <h3>1）基本パッケージ（自社開発）</h3>
+        <div class="info-box">
+            共通基盤として全顧客に提供するコア機能群。
+        </div>
+        <table>
+            <thead>
+                <tr><th>機能</th><th>内容</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>複数カメラキャリブレーション</strong></td>
+                    <td>マルチカメラ構成のキャリブレーション情報（内部・外部パラメータ）の取り込み・管理機能。
+                    チェッカーボードやCharuco等による自動キャリブレーションをサポート。</td>
+                </tr>
+                <tr>
+                    <td><strong>SAM・YOLO基本パッケージ</strong></td>
+                    <td>SAM（Segment Anything Model）によるセグメンテーション機能と、
+                    YOLOによる物体検出・キーポイント推定の共通基盤。
+                    事前学習済みモデルおよびファインチューニング用パイプラインを含む。</td>
+                </tr>
+                <tr>
+                    <td><strong>SAMアノテーション支援ツール</strong></td>
+                    <td>SAMを活用した半自動アノテーション機能。顧客のデータ準備コスト（ラベリング工数）を
+                    大幅に削減し、導入ハードルを下げる。モデル推論結果を人手で修正するワークフローを提供。</td>
+                </tr>
+                <tr>
+                    <td><strong>モーションキャプチャ連携</strong></td>
+                    <td>外部モーションキャプチャシステム（THEI3D、OptiTrack等）のデータを取り込み、
+                    手・身体の位置情報をROI制約として活用する連携機能。</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2）お客様ごとのカスタマイズパッケージ（委託開発）</h3>
+        <div class="highlight-box">
+            個別の顧客要件に応じて開発を委託する部分。スポーツ種目・打具の種類・測定目的に合わせてカスタマイズする。
+        </div>
+        <table>
+            <thead>
+                <tr><th>項目</th><th>内容</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>お客様データでの学習</strong></td>
+                    <td>顧客が提供する動画データ・撮影環境に特化したモデルの学習。
+                    アノテーション作成支援から学習・評価までを一貫して実施。</td>
+                </tr>
+                <tr>
+                    <td><strong>KPI設定</strong></td>
+                    <td>顧客の要求仕様に基づき、達成すべきKPI（検出精度、処理速度、対応シーン等）を定義。
+                    例：スマッシュ時の面角度誤差5度以内、キーポイント検出率90%以上 等。</td>
+                </tr>
+                <tr>
+                    <td><strong>KPI達成のための各種施工</strong></td>
+                    <td>
+                        <ul>
+                            <li>データ拡張・追加データ収集による精度向上</li>
+                            <li>モデルアーキテクチャの調整・最適化</li>
+                            <li>推論環境（エッジデバイス、クラウド等）への最適化・デプロイ</li>
+                            <li>顧客システムとのAPI連携・インテグレーション</li>
+                            <li>運用後のモデル更新・メンテナンス体制の構築</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Business model diagram -->
+        <h3>製品構成イメージ</h3>
+        <div class="diagram-wrapper">
+            <svg width="560" height="300" viewBox="0 0 560 300">
+                <!-- Base package -->
+                <rect x="30" y="160" width="500" height="120" rx="12" fill="#e8f0fe" stroke="#0f3460" stroke-width="2"/>
+                <text x="280" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f3460">基本パッケージ（自社開発・共通基盤）</text>
+                <rect x="50" y="205" width="140" height="55" rx="8" fill="#fff" stroke="#c4d8f0" stroke-width="1.5"/>
+                <text x="120" y="228" text-anchor="middle" font-size="11" fill="#333">複数カメラ</text>
+                <text x="120" y="245" text-anchor="middle" font-size="11" fill="#333">キャリブレーション</text>
+                <rect x="210" y="205" width="140" height="55" rx="8" fill="#fff" stroke="#c4d8f0" stroke-width="1.5"/>
+                <text x="280" y="228" text-anchor="middle" font-size="11" fill="#333">SAM・YOLO</text>
+                <text x="280" y="245" text-anchor="middle" font-size="11" fill="#333">基本パッケージ</text>
+                <rect x="370" y="205" width="140" height="55" rx="8" fill="#fff" stroke="#c4d8f0" stroke-width="1.5"/>
+                <text x="440" y="228" text-anchor="middle" font-size="11" fill="#333">モーションキャプチャ</text>
+                <text x="440" y="245" text-anchor="middle" font-size="11" fill="#333">連携機能</text>
+
+                <!-- Custom packages -->
+                <rect x="30" y="20" width="150" height="110" rx="12" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                <text x="105" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#856404">顧客A</text>
+                <text x="105" y="68" text-anchor="middle" font-size="10" fill="#856404">バドミントン</text>
+                <text x="105" y="86" text-anchor="middle" font-size="10" fill="#856404">ラケット追尾</text>
+                <text x="105" y="115" text-anchor="middle" font-size="9" fill="#999">委託開発</text>
+
+                <rect x="205" y="20" width="150" height="110" rx="12" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                <text x="280" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#856404">顧客B</text>
+                <text x="280" y="68" text-anchor="middle" font-size="10" fill="#856404">テニス</text>
+                <text x="280" y="86" text-anchor="middle" font-size="10" fill="#856404">ラケット解析</text>
+                <text x="280" y="115" text-anchor="middle" font-size="9" fill="#999">委託開発</text>
+
+                <rect x="380" y="20" width="150" height="110" rx="12" fill="#fff3cd" stroke="#ffc107" stroke-width="2"/>
+                <text x="455" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#856404">顧客C</text>
+                <text x="455" y="68" text-anchor="middle" font-size="10" fill="#856404">野球</text>
+                <text x="455" y="86" text-anchor="middle" font-size="10" fill="#856404">バット追尾</text>
+                <text x="455" y="115" text-anchor="middle" font-size="9" fill="#999">委託開発</text>
+
+                <!-- Arrows -->
+                <line x1="105" y1="130" x2="105" y2="158" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                <line x1="280" y1="130" x2="280" y2="158" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                <line x1="455" y1="130" x2="455" y2="158" stroke="#aaa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                <defs>
+                    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#aaa"/>
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- 7. 技術的課題 -->
+    <section>
+        <h2><span class="num">7</span>想定される技術的課題</h2>
+        <table>
+            <thead>
+                <tr><th>課題</th><th>内容</th><th>対策案</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>モーションブラー</td>
+                    <td>高速スイング時にラケットがブレて写る</td>
+                    <td>高フレームレート撮影、ブラー除去前処理、時系列予測での補完</td>
+                </tr>
+                <tr>
+                    <td>遮蔽</td>
+                    <td>手や体でラケットの一部が隠れる</td>
+                    <td>マルチアングルでの相互補完、過去フレームからの予測</td>
+                </tr>
+                <tr>
+                    <td>細い構造</td>
+                    <td>シャフトやフレームが細く検出困難</td>
+                    <td>高解像度ROI、エッジ特徴量の強調</td>
+                </tr>
+                <tr>
+                    <td>背景類似</td>
+                    <td>ガットのストリングがネットと類似</td>
+                    <td>THEI3Dによる位置制約、色・テクスチャ特徴の活用</td>
+                </tr>
+                <tr>
+                    <td>アノテーションコスト</td>
+                    <td>6点の正確なラベリングは手間</td>
+                    <td>SAMベースの半自動アノテーション支援ツール、合成データ（3Dモデルレンダリング）による学習データ拡充</td>
+                </tr>
+                <tr>
+                    <td>検出座標のジッター</td>
+                    <td>フレームごとのキーポイント座標が微細に震え、物理量算出に悪影響</td>
+                    <td>カルマンフィルタ等の平滑化フィルタ、Tracking-by-Detectionによる時系列安定化</td>
+                </tr>
+                <tr>
+                    <td>時系列補完</td>
+                    <td>300km/h超のスマッシュ時、数フレームにわたりラケットが検出不能になる</td>
+                    <td>前後フレームの運動モデル予測、マルチアングル間の相互補完による欠損フレーム復元</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 8. レビュー反映事項 -->
+    <section>
+        <h2><span class="num">8</span>レビュー反映事項</h2>
+        <p style="font-size:0.9rem;color:#666;margin-bottom:16px;">外部レビュー（Gemini）のフィードバックに基づき、以下の項目を企画書に反映した。</p>
+        <table>
+            <thead>
+                <tr><th>レビュー指摘</th><th>対応内容</th><th>反映箇所</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>手法A+Cのハイブリッド構成が最有望</td>
+                    <td>手法E（YOLOv8-Pose粗検出 + セグメンテーション幾何補正）を候補に追加</td>
+                    <td>セクション4, 5</td>
+                </tr>
+                <tr>
+                    <td>ジッター対策の記述が欠落</td>
+                    <td>カルマンフィルタ等による平滑化を技術的課題・対策に追加</td>
+                    <td>セクション5, 7</td>
+                </tr>
+                <tr>
+                    <td>時系列補完の記述が欠落</td>
+                    <td>Tracking-by-Detectionの導入、モーションブラー/遮蔽時の欠損フレーム復元を追加</td>
+                    <td>セクション5, 7</td>
+                </tr>
+                <tr>
+                    <td>法線ベクトル算出の数学的根拠</td>
+                    <td>v1=F4-F3, v2=F1-F2の外積による法線定義を明記</td>
+                    <td>セクション5</td>
+                </tr>
+                <tr>
+                    <td>SAMアノテーション支援ツールの追加</td>
+                    <td>基本パッケージにSAMベースの半自動アノテーション機能を追加（導入ハードル低減）</td>
+                    <td>セクション6</td>
+                </tr>
+                <tr>
+                    <td>合成データ（3Dレンダリング）活用</td>
+                    <td>学習データ拡充手段として3Dモデルレンダリングによる合成データ生成を明記</td>
+                    <td>セクション7</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- 9. まとめ -->
+    <section>
+        <h2><span class="num">9</span>まとめ</h2>
+        <p>
+            本プロジェクトでは、約20台のカメラによるマルチアングル動画からバドミントンラケットの骨格（6キーポイント）を推定するシステムを構築する。
+            THEI3Dとの連携により探索範囲を限定し、YOLOベースの画像処理を中心に複数手法をトライアルしたうえで最適なアプローチを選定する。
+        </p>
+        <p>
+            <strong>ステップ1（6ヶ月）</strong>で5つの認識手法（A〜E、ハイブリッド含む）を試作・比較評価し、最適手法を選定。
+            <strong>ステップ2（2ヶ月+FB）</strong>でラケットスピード・面の向き・打点位置等の物理量算出を実装する。
+            時系列制御（Tracking-by-Detection、カルマンフィルタ）により、ジッター抑制と欠損フレーム補完を実現する。
+        </p>
+        <p>
+            成果物はスポーツ打具追尾ツールとして製品化し、基本パッケージ（自社・SAMアノテーション支援含む）＋カスタマイズパッケージ（委託）の2層構成で展開する。
+        </p>
+    </section>
+
+</div>
+
+<div class="footer">
+    Badminton Racket Skeleton Estimation Project &mdash; Proposal Document
+</div>
+
+</body>
+</html>
